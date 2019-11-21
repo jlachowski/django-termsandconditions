@@ -129,10 +129,9 @@ class AcceptTermsView(CreateView, GetTermsViewMixin):
                 )
                 new_user_terms.save()
             except IntegrityError:  # pragma: nocover
-                pass
-            
-        if terms_ids:
-            cache.delete('tandc.not_agreed_terms_' + user.get_username())
+                pass  
+        
+        cache.delete('tandc.not_agreed_terms_' + user.get_username())
 
         return HttpResponseRedirect(return_url)
 
