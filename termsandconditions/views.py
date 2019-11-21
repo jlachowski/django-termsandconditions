@@ -131,7 +131,7 @@ class AcceptTermsView(CreateView, GetTermsViewMixin):
             except IntegrityError:  # pragma: nocover
                 pass  
         
-        cache.delete('tandc.not_agreed_terms_' + user.get_username())
+        cache.set('tandc.not_agreed_terms_' + user.get_username(), None, getattr(settings, 'TERMS_CACHE_SECONDS', 30))
 
         return HttpResponseRedirect(return_url)
 
