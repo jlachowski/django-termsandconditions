@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, CreateView, FormView
 from django.template.loader import get_template
 from django.core.mail import send_mail
+from django.core.cache import cache
 import logging
 from smtplib import SMTPException
 
@@ -129,6 +130,9 @@ class AcceptTermsView(CreateView, GetTermsViewMixin):
                 new_user_terms.save()
             except IntegrityError:  # pragma: nocover
                 pass
+            
+        if terms_ids:
+            cache.delete('tandc.not_agreed_terms_' + user.get_username())
 
         return HttpResponseRedirect(return_url)
 
